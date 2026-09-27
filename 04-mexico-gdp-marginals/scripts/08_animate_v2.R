@@ -405,7 +405,7 @@ draw_frame <- function(i) {
       annotate("segment", x = lon_span[1], xend = lon_span[2], y = yn, yend = yn,
                colour = P$accent, linewidth = 0.5, linetype = "22", alpha = h_pc) +
       annotate("text", x = lon_span[2] + 0.4, y = yn, hjust = 0, vjust = 0.5, lineheight = 1.05,
-               label = sprintf(es_en("Promedio nacional,\n$%s\npor persona", "National average,\nMX$%s\nper person"),
+               label = sprintf(es_en("Promedio nacional,\n%s pesos\npor persona", "National average,\nMX$%s\nper person"),  # no bare "$": it reads as dollars
                                format(round(NAT_PC, -3), big.mark = ",")),
                colour = P$accent, family = STYLE_FONT, size = 3.1, alpha = h_pc) +
       # the tallest per-person column; name the place so nobody has to guess
