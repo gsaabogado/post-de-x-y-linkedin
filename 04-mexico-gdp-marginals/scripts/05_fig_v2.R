@@ -88,7 +88,7 @@ outline <- tibble(x = outline[, "X"], y = outline[, "Y"],
 cities <- CITIES |>
   filter(lon >= map$xmin) |>
   mutate(code = name,
-         code = ifelse(code == "Mexico City", "Ciudad de México", code),
+         code = ifelse(code == "Mexico City", es_en("Ciudad de México", "Mexico City"), code),
          px = atx(band_val(pl, lat, BINF)) + 0.3, ly = lat,
          cx = lon, cy = aty(band_val(po, lon, BINF)) + 0.3)
 
@@ -123,29 +123,29 @@ make <- function(mode) {
     annotate("text", x = atx(ticks), y = lat_span[2] + 0.3, label = tick_lab,
              colour = p$sub, family = STYLE_FONT, size = 2.8, vjust = 0) +
     annotate("text", x = lat_base, y = lat_span[2] + 1.2,
-             label = "Billones de pesos\npor grado de latitud",
+             label = es_en("Billones de pesos\npor grado de latitud", "Trillion pesos\nper degree of latitude"),
              colour = p$ink, family = STYLE_FONT, size = 3.0, hjust = 0, vjust = 0,
              lineheight = 1.05) +
     annotate("text", x = lon_span[1] - 0.3, y = aty(ticks), label = tick_lab,
              colour = p$sub, family = STYLE_FONT, size = 2.8, hjust = 1) +
     annotate("text", x = lon_span[1], y = aty(27e12),
-             label = "Billones de pesos por grado de longitud",
+             label = es_en("Billones de pesos por grado de longitud", "Trillion pesos per degree of longitude"),
              colour = p$ink, family = STYLE_FONT, size = 3.0, hjust = 0, vjust = 0) +
     # Tropic of Cancer, with its share
     annotate("segment", x = canvas$xmin, xend = lat_base + LAT_W,
              y = TROPIC, yend = TROPIC, colour = p$sub, linewidth = 0.35, linetype = "22") +
     annotate("text", x = map$xmin + 0.2, y = TROPIC + 0.25,
-             label = sprintf("Trópico de Cáncer. Al norte se produce el %.0f%% del PIB",
+             label = sprintf(es_en("Trópico de Cáncer. Al norte se produce el %.0f%% del PIB", "Tropic of Cancer. %.0f%% of GDP is produced north of it"),
                              100 * S$north_share),
              colour = p$sub, family = STYLE_FONT, size = 2.9, hjust = 0, vjust = 0) +
     # strip labels, in the empty Pacific and Gulf
     annotate("text", x = map$xmin + 0.2, y = S$lat50$lo - 0.3,
-             label = sprintf("La mitad del PIB se produce\nentre %.2f°N y %.2f°N,\nuna franja de %.0f km",
+             label = sprintf(es_en("La mitad del PIB se produce\nentre %.2f°N y %.2f°N,\nuna franja de %.0f km", "Half of GDP is produced\nbetween %.2f°N and %.2f°N,\na strip %.0f km wide"),
                              S$lat50$lo, S$lat50$hi, round(lat_km, -1)),
              colour = p$accent, family = STYLE_FONT, size = 3.1, hjust = 0, vjust = 1,
              lineheight = 1.05) +
     annotate("text", x = S$lon50$hi + 0.4, y = aty(21.5e12),
-             label = sprintf("La mitad del PIB se produce\nentre %.2f°O y %.2f°O,\nuna franja de %.0f km",
+             label = sprintf(es_en("La mitad del PIB se produce\nentre %.2f°O y %.2f°O,\nuna franja de %.0f km", "Half of GDP is produced\nbetween %.2f°W and %.2f°W,\na strip %.0f km wide"),
                              -S$lon50$lo, -S$lon50$hi, round(lon_km, -1)),
              colour = p$accent, family = STYLE_FONT, size = 3.1, hjust = 0, vjust = 1,
              lineheight = 1.05) +
@@ -159,14 +159,15 @@ make <- function(mode) {
               "cx", "cy", ratio, STYLE_FONT, p$ink, p$bg, size = 2.9, hjust = 0.5, vjust = 0) +
     coord_fixed(ratio = ratio, xlim = c(canvas$xmin, canvas$xmax),
                 ylim = c(canvas$ymin, canvas$ymax), expand = FALSE, clip = "off") +
-    labs(title = sprintf("La mitad del PIB de México se produce en una franja de %.0f km",
+    labs(title = sprintf(es_en("La mitad del PIB de México se produce en una franja de %.0f km", "Half of Mexico's GDP is produced in a strip %.0f km wide"),
                          round(lat_km, -1)),
-         subtitle = sprintf("Half of Mexico's GDP is produced in a strip %.0f km wide · México, 2021",
-                            round(lat_km, -1)),
+         subtitle = es_en(sprintf("Half of Mexico's GDP is produced in a strip %.0f km wide · México, 2021",
+                            round(lat_km, -1)), "Mexico, 2021"),
          caption = caption_ls(
-           notes = sprintf("Cada barra suma el PIB producido en una franja de 0.25 grados (unos 28 km). Las barras de la derecha suman por latitud y las de abajo por longitud, con la misma escala, así que una misma longitud es la misma cantidad de dinero. Un billón es un millón de millones. PIB de 2021 en pesos de agosto de 2026 (INPC). El contorno de México solo sirve de referencia. PIB total, %.1f billones de pesos (%.1f billones de dólares, a %.2f pesos por dólar, promedio de agosto de 2026).",
+           notes = sprintf(es_en("Cada barra suma el PIB producido en una franja de 0.25 grados (unos 28 km). Las barras de la derecha suman por latitud y las de abajo por longitud, con la misma escala, así que una misma longitud es la misma cantidad de dinero. Un billón es un millón de millones. PIB de 2021 en pesos de agosto de 2026 (INPC). El contorno de México solo sirve de referencia. PIB total, %.1f billones de pesos (%.1f billones de dólares, a %.2f pesos por dólar, promedio de agosto de 2026).",
+                                 "Each bar adds up the GDP produced in a band 0.25 degrees wide (about 28 km). The bars on the right add up by latitude and those at the bottom by longitude, on the same scale, so equal length means equal money. GDP of 2021 in pesos of August 2026 (INPC). The outline of Mexico is only a reference. Total GDP, %.1f trillion pesos (%.1f trillion dollars, at %.2f pesos per dollar, August 2026 average)."),
                            total_mxn / 1e12, total_mxn / FX / 1e12, FX),
-           source = "Rossi-Hansberg y Zhang (2025), NBER WP 33458, versión 2, 2021. INEGI, PIB e INPC.",
+           source = es_en("Rossi-Hansberg y Zhang (2025), NBER WP 33458, versión 2, 2021. INEGI, PIB e INPC.", "Rossi-Hansberg and Zhang (2025), NBER WP 33458, version 2, 2021. INEGI, GDP and INPC."),
            width = 150)) +
     theme_ls(mode) +
     theme(axis.line = element_blank(), axis.ticks = element_blank(),

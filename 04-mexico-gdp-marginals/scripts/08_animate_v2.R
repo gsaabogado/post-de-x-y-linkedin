@@ -202,9 +202,9 @@ cities_pc <- cities_pc_src <- NULL   # filled after `cities` below
 # One fixed line per video (Luis, 2026-09-26): it stays up from the first frame
 # until the close, so the motion never waits for text. What the old per-phase
 # lines said is either visible (the folds, the axis titles) or in the notes.
-LINE_TOTAL <- sprintf("Cada punto son %.0f millones de pesos (%.0f millones de dólares).",
+LINE_TOTAL <- sprintf(es_en("Cada punto son %.0f millones de pesos (%.0f millones de dólares).", "Each dot is %.0f million pesos (%.0f million dollars)."),
                       per_dot / 1e6, per_dot / FX / 1e6)
-LINE_PC <- "Dividimos el PIB de cada franja entre la gente que vive en ella."
+LINE_PC <- es_en("Dividimos el PIB de cada franja entre la gente que vive en ella.", "We divide the GDP of each band by the people who live in it.")
 NARR <- list(
   map = LINE_TOTAL, fold_lat = LINE_TOTAL, hold_lat = LINE_TOTAL, back_lat = LINE_TOTAL,
   fold_lon = LINE_TOTAL, hold_lon = LINE_TOTAL,
@@ -228,7 +228,7 @@ outline <- tibble(x = outline[, "X"], y = outline[, "Y"],
 
 cities <- CITIES |>
   filter(lon >= map$xmin) |>
-  mutate(code = ifelse(name == "Mexico City", "Ciudad de México", name),
+  mutate(code = ifelse(name == "Mexico City", es_en("Ciudad de México", "Mexico City"), name),
          px = L$atx(band_val(pl, lat, BINF)) + 0.3, ly = lat,
          cx = lon, cy = L$aty(band_val(po, lon, BINF)) + 0.3)
 # per-person bar tips on the latitude axis, for the two cities the turn is about
@@ -236,18 +236,20 @@ cities_pc <- cities |> filter(name %in% c("Mexico City", "Monterrey")) |>
   mutate(px = L$lat_base + d_lat$pc1[match(floor(lat), d_lat$deg)] * s_pcx + 0.3)
 
 TITLE <- if (VIDEO == "total") {
-  sprintf("La mitad del PIB de México se produce en una franja de %.0f km", round(lat_km, -1))
-} else sprintf("Por persona, el norte de México produce %.1f veces más que el sur", NS_RATIO)
-SUBTITLE <- if (VIDEO == "total") {
+  sprintf(es_en("La mitad del PIB de México se produce en una franja de %.0f km", "Half of Mexico's GDP is produced in a strip %.0f km wide"), round(lat_km, -1))
+} else sprintf(es_en("Por persona, el norte de México produce %.1f veces más que el sur", "Per person, northern Mexico produces %.1f times as much as the south"), NS_RATIO)
+SUBTITLE <- if (FIG_LANG == "en") "Mexico, 2021" else if (VIDEO == "total") {
   sprintf("Half of Mexico's GDP is produced in a strip %.0f km wide · México, 2021", round(lat_km, -1))
 } else sprintf("Per person, northern Mexico produces %.1f times as much as the south · México, 2021", NS_RATIO)
 
-SOURCE <- "Rossi-Hansberg y Zhang (2025), NBER WP 33458, versión 2, 2021. INEGI, PIB e INPC."
+SOURCE <- es_en("Rossi-Hansberg y Zhang (2025), NBER WP 33458, versión 2, 2021. INEGI, PIB e INPC.", "Rossi-Hansberg and Zhang (2025), NBER WP 33458, version 2, 2021. INEGI, GDP and INPC.")
 CAPTION <- if (VIDEO == "total") {
-  caption_ls(notes = sprintf("Cada barra suma el PIB producido en una franja de 0.25 grados (unos 28 km). Las barras de la derecha suman por latitud y las de abajo por longitud, con la misma escala, así que una misma longitud es la misma cantidad de dinero. Un billón es un millón de millones. PIB de 2021 en pesos de agosto de 2026 (INPC). El contorno de México solo sirve de referencia. El mapa reparte el PIB según dónde vive la gente, a 1 km. PIB total, %.1f billones de pesos (%.1f billones de dólares, a %.2f pesos por dólar, promedio de agosto de 2026).",
+  caption_ls(notes = sprintf(es_en("Cada barra suma el PIB producido en una franja de 0.25 grados (unos 28 km). Las barras de la derecha suman por latitud y las de abajo por longitud, con la misma escala, así que una misma longitud es la misma cantidad de dinero. Un billón es un millón de millones. PIB de 2021 en pesos de agosto de 2026 (INPC). El contorno de México solo sirve de referencia. El mapa reparte el PIB según dónde vive la gente, a 1 km. PIB total, %.1f billones de pesos (%.1f billones de dólares, a %.2f pesos por dólar, promedio de agosto de 2026).",
+                             "Each bar adds up the GDP produced in a band 0.25 degrees wide (about 28 km). The bars on the right add up by latitude and those at the bottom by longitude, on the same scale, so equal length means equal money. GDP of 2021 in pesos of August 2026 (INPC). The outline of Mexico is only a reference. The map spreads GDP by where people live, at 1 km. Total GDP, %.1f trillion pesos (%.1f trillion dollars, at %.2f pesos per dollar, August 2026 average)."),
                              sum(g$gdp) / 1e12, sum(g$gdp) / FX / 1e12, FX), source = SOURCE)
 } else {
-  caption_ls(notes = "Cada barra divide el PIB de una franja de 1 grado (unos 110 km) entre la gente que vive en ella. PIB de 2021 en pesos de agosto de 2026 (INPC). El PIB de cada estado viene de INEGI, pero dentro de cada estado lo reparte un modelo que se apoya sobre todo en la población, así que las diferencias reales entre lugares probablemente son mayores.",
+  caption_ls(notes = es_en("Cada barra divide el PIB de una franja de 1 grado (unos 110 km) entre la gente que vive en ella. PIB de 2021 en pesos de agosto de 2026 (INPC). El PIB de cada estado viene de INEGI, pero dentro de cada estado lo reparte un modelo que se apoya sobre todo en la población, así que las diferencias reales entre lugares probablemente son mayores.",
+                          "Each bar divides the GDP of a band 1 degree wide (about 110 km) by the people who live in it. GDP of 2021 in pesos of August 2026 (INPC). Each state's GDP comes from INEGI, but within each state a model spreads it mostly by population, so the real differences between places are probably larger."),
              source = SOURCE)
 }
 
@@ -346,7 +348,7 @@ draw_frame <- function(i) {
       annotate("text", x = L$atx(ticks), y = lat_span[2] + 0.3, label = tick_lab,
                colour = P$sub, family = STYLE_FONT, size = 2.8, vjust = 0, alpha = a_lat) +
       annotate("text", x = L$lat_base, y = lat_span[2] + 1.2,
-               label = "Billones de pesos\npor grado de latitud", colour = P$ink,
+               label = es_en("Billones de pesos\npor grado de latitud", "Trillion pesos\nper degree of latitude"), colour = P$ink,
                family = STYLE_FONT, size = 3.0, hjust = 0, vjust = 0, lineheight = 1.05,
                alpha = a_lat) +
       halo_text(cities, "px", "ly", ratio, STYLE_FONT, P$ink, P$bg,
@@ -360,7 +362,7 @@ draw_frame <- function(i) {
       annotate("text", x = lon_span[1] - 0.3, y = L$aty(ticks), label = tick_lab,
                colour = P$sub, family = STYLE_FONT, size = 2.8, hjust = 1, alpha = a_lon) +
       annotate("text", x = lon_span[1], y = L$aty(27e12),
-               label = "Billones de pesos por grado de longitud", colour = P$ink,
+               label = es_en("Billones de pesos por grado de longitud", "Trillion pesos per degree of longitude"), colour = P$ink,
                family = STYLE_FONT, size = 3.0, hjust = 0, vjust = 0, alpha = a_lon) +
       halo_text(filter(cities, name != "Monterrey"), "cx", "cy", ratio, STYLE_FONT, P$ink, P$bg,
                 size = 2.9, hjust = 0.5, vjust = 0, alpha = a_lon) +
@@ -376,14 +378,14 @@ draw_frame <- function(i) {
       annotate("text", x = L$lat_base + pc_ticks * s_pcx, y = lat_span[2] + 0.3, label = pc_lab,
                colour = P$sub, family = STYLE_FONT, size = 2.8, vjust = 0, alpha = a_pc) +
       annotate("text", x = L$lat_base, y = lat_span[2] + 1.2,
-               label = "Miles de pesos por persona al año,\npor grado de latitud", colour = P$ink,
+               label = es_en("Miles de pesos por persona al año,\npor grado de latitud", "Thousand pesos per person per year,\nper degree of latitude"), colour = P$ink,
                family = STYLE_FONT, size = 3.0, hjust = 0, vjust = 0, lineheight = 1.05, alpha = a_pc) +
       annotate("segment", y = L$lon_base + pc_ticks * s_pcy, yend = L$lon_base + pc_ticks * s_pcy,
                x = lon_span[1], xend = lon_span[2], colour = P$grid, linewidth = 0.35, alpha = a_pc) +
       annotate("text", x = lon_span[1] - 0.3, y = L$lon_base + pc_ticks * s_pcy, label = pc_lab,
                colour = P$sub, family = STYLE_FONT, size = 2.8, hjust = 1, alpha = a_pc) +
       annotate("text", x = lon_span[1], y = L$aty(27e12),
-               label = "Miles de pesos por persona al año, por grado de longitud", colour = P$ink,
+               label = es_en("Miles de pesos por persona al año, por grado de longitud", "Thousand pesos per person per year, per degree of longitude"), colour = P$ink,
                family = STYLE_FONT, size = 3.0, hjust = 0, vjust = 0, alpha = a_pc)
   }
   if (b_bar > 0.01) {
@@ -403,7 +405,7 @@ draw_frame <- function(i) {
       annotate("segment", x = lon_span[1], xend = lon_span[2], y = yn, yend = yn,
                colour = P$accent, linewidth = 0.5, linetype = "22", alpha = h_pc) +
       annotate("text", x = lon_span[2] + 0.4, y = yn, hjust = 0, vjust = 0.5, lineheight = 1.05,
-               label = sprintf("Promedio nacional,\n$%s\npor persona",
+               label = sprintf(es_en("Promedio nacional,\n$%s\npor persona", "National average,\nMX$%s\nper person"),
                                format(round(NAT_PC, -3), big.mark = ",")),
                colour = P$accent, family = STYLE_FONT, size = 3.1, alpha = h_pc) +
       # the tallest per-person column; name the place so nobody has to guess
@@ -416,7 +418,7 @@ draw_frame <- function(i) {
       # over the Gulf of Mexico, where the page is white: a label on dark land
       # needs a halo, and a halo on 1 km lights looks blotchy
       annotate("text", x = GULF_X, y = TROPIC + 0.25, hjust = 0, vjust = 0, lineheight = 1.05,
-               label = sprintf("Trópico de Cáncer.\nAl norte se produce %.1f veces\nmás por persona que al sur",
+               label = sprintf(es_en("Trópico de Cáncer.\nAl norte se produce %.1f veces\nmás por persona que al sur", "Tropic of Cancer.\nNorth of it, output per person\nis %.1f times the south's"),
                                NS_RATIO),
                colour = P$ink, family = STYLE_FONT, size = 3.1, alpha = h_pc) +
       halo_text(cities_pc, "px", "ly", ratio, STYLE_FONT, P$ink, P$bg,
@@ -439,16 +441,16 @@ draw_frame <- function(i) {
       # dark map: over the Gulf; once the map has faded (F1's close): F1's spot
       (if (ph %in% c("to_final", "final"))
         annotate("text", x = map$xmin + 0.2, y = TROPIC + 0.25,
-                 label = sprintf("Trópico de Cáncer. Al norte se produce el %.0f%% del PIB",
+                 label = sprintf(es_en("Trópico de Cáncer. Al norte se produce el %.0f%% del PIB", "Tropic of Cancer. %.0f%% of GDP is produced north of it"),
                                  100 * S$north_share),
                  colour = P$sub, family = STYLE_FONT, size = 2.9, hjust = 0, vjust = 0, alpha = s_lat)
        else
         annotate("text", x = GULF_X, y = TROPIC + 0.25, hjust = 0, vjust = 0, lineheight = 1.05,
-                 label = sprintf("Trópico de Cáncer.\nAl norte se produce\nel %.0f%% del PIB",
+                 label = sprintf(es_en("Trópico de Cáncer.\nAl norte se produce\nel %.0f%% del PIB", "Tropic of Cancer.\n%.0f%% of GDP is\nproduced north of it"),
                                  100 * S$north_share),
                  colour = P$ink, family = STYLE_FONT, size = 2.9, alpha = s_lat)) +
       annotate("text", x = map$xmin + 0.2, y = S$lat50$lo - 0.3,
-               label = sprintf("La mitad del PIB se produce\nentre %.2f°N y %.2f°N,\nuna franja de %.0f km",
+               label = sprintf(es_en("La mitad del PIB se produce\nentre %.2f°N y %.2f°N,\nuna franja de %.0f km", "Half of GDP is produced\nbetween %.2f°N and %.2f°N,\na strip %.0f km wide"),
                                S$lat50$lo, S$lat50$hi, round(lat_km, -1)),
                colour = P$accent, family = STYLE_FONT, size = 3.1, hjust = 0, vjust = 1,
                lineheight = 1.05, alpha = s_lat)
@@ -456,7 +458,7 @@ draw_frame <- function(i) {
   if (s_lon > 0.01) {
     gg <- gg +
       annotate("text", x = S$lon50$hi + 0.4, y = L$aty(21.5e12),
-               label = sprintf("La mitad del PIB se produce\nentre %.2f°O y %.2f°O,\nuna franja de %.0f km",
+               label = sprintf(es_en("La mitad del PIB se produce\nentre %.2f°O y %.2f°O,\nuna franja de %.0f km", "Half of GDP is produced\nbetween %.2f°W and %.2f°W,\na strip %.0f km wide"),
                                -S$lon50$lo, -S$lon50$hi, round(lon_km, -1)),
                colour = P$accent, family = STYLE_FONT, size = 3.1, hjust = 0, vjust = 1,
                lineheight = 1.05, alpha = s_lon)
@@ -477,7 +479,7 @@ draw_frame <- function(i) {
 }
 
 # --- render -----------------------------------------------------------------
-FRAMES <- file.path("frames_v2", VIDEO)
+FRAMES <- file.path("frames_v2", paste0(VIDEO, if (FIG_LANG == "en") "_en" else ""))
 dir.create(FRAMES, showWarnings = FALSE, recursive = TRUE)
 
 render_one <- function(i) {
@@ -518,8 +520,8 @@ message(sprintf("frames done in %.1f min", as.numeric(difftime(Sys.time(), t0, u
 n_written <- length(list.files(FRAMES, pattern = "^f[0-9]{4}\\.png$"))
 if (n_written != N_FRAMES) stop(sprintf("expected %d frames, found %d", N_FRAMES, n_written))
 
-mp4 <- sprintf("images/video_%s_2021_light.mp4", VIDEO)
-gif <- sprintf("images/video_%s_2021_light.gif", VIDEO)
+mp4 <- sprintf("images/video_%s_2021_light%s.mp4", VIDEO, if (FIG_LANG == "en") "_en" else "")
+gif <- sprintf("images/video_%s_2021_light%s.gif", VIDEO, if (FIG_LANG == "en") "_en" else "")
 system2("ffmpeg", c("-y", "-loglevel", "error", "-framerate", FPS,
                     "-i", file.path(FRAMES, "f%04d.png"),
                     "-vf", shQuote(sprintf("scale=%d:%d:flags=lanczos", W_PX, H_PX)),
