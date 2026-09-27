@@ -1,0 +1,15 @@
+.Renviron
+data/
+*/data/
+images/
+*/images/
+frames*/
+*/frames*/
+*.png
+*.mp4
+*.gif
+*.rds
+*.tif
+*.feather
+.DS_Store
+.Rhistory
