@@ -1,4 +1,4 @@
-# México en datos
+# Post de X y LinkedIn
 
 Code behind the data threads by Luis Sarmiento (ETH Zürich, CMCC) on X ([@LSarmientoEcon](https://x.com/LSarmientoEcon)) and LinkedIn. Each folder is one post and runs on its own. The figures are built in R, and every number in them is computed by these scripts.
 
