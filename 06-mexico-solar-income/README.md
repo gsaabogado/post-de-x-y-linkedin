@@ -16,4 +16,4 @@ The map also needs the WorldPop 2025 1 km grid, downloaded by `../02-mexico-popu
 
 ## Run order
 
-`01_build_data.R`, `02_map.R` (F1), `03_build_income.R`, `04_fig_deciles.R` (F2), `05_build_ac.R`, `06_fig_ac.R` (F3), `07_build_concentration.R`, `08_fig_concentration.R` (F4). `09_dac_vs_panel.R` computes the numbers on the full-price tariff (DAC) quoted in the thread.
+`01_build_data.R`, `02_map.R` (F1), `03_build_income.R`, `04_fig_deciles.R` (F2), `05_build_ac.R`, `06_fig_ac.R` (F3), `07_build_concentration.R`, `08_fig_concentration.R` (F4). `09_dac_vs_panel.R` computes the numbers on the full-price tariff (DAC) quoted in the thread. `10_carousel_pdf.R` joins the four English figures (`FIG_LANG=en`) into the LinkedIn carousel PDF.
