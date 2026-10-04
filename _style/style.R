@@ -90,21 +90,34 @@ es_en <- function(es, en) if (FIG_LANG == "en") en else es
 
 # Journal-style footer: notes, then source, in grey at the left.
 # Spanish only here; the English gloss lives in the subtitle and axis titles.
-caption_ls <- function(notes = NULL, source, width = 150) {
-  parts <- c(if (!is.null(notes)) strwrap(paste(es_en("Notas:", "Notes:"), notes), width),
+# Several notes (a character vector) become a numbered list, one note per line,
+# numbered here so the numbers can never repeat or skip, and wrapped at
+# width_list so a note runs the full width of the image (Luis, 2026-10-03).
+caption_ls <- function(notes = NULL, source, width = 150, width_list = 210) {
+  note_lines <- if (length(notes) > 1) {
+    c(es_en("Notas:", "Notes:"),
+      unlist(lapply(seq_along(notes), function(i)
+        strwrap(sprintf("%d) %s", i, notes[i]), width_list, exdent = 3))))
+  } else if (!is.null(notes)) {
+    strwrap(paste(es_en("Notas:", "Notes:"), notes), width)
+  }
+  parts <- c(note_lines,
              strwrap(paste(es_en("Fuente:", "Source:"), source), width))
   paste(parts, collapse = "\n")
 }
 
-# The series signature (Luis, 2026-09-24): the byline alone, bottom right of
-# the image, in the ochre `signature` colour that no data ever uses. No series
-# label, logo or watermark. save_ls() adds it to every figure.
+# The series signature (Luis, 2026-09-24): the byline alone, in the ochre
+# `signature` colour that no data ever uses. No series label, logo or watermark.
+# save_ls() adds it to every figure. Top right, level with the title, since
+# 2026-10-03 (it sat bottom right before): numbered notes now run the full
+# width of the image and would reach it. The first title line must stay
+# within about two thirds of the width, so wrap long titles.
 BYLINE <- "Luis Sarmiento \u00b7 ETH Z\u00fcrich \u00b7 @LSarmientoEcon"
 byline_ls <- function(mode = "light") {
   list(labs(tag = BYLINE),
-       theme(plot.tag.location = "plot", plot.tag.position = "bottomright",
+       theme(plot.tag.location = "plot", plot.tag.position = "topright",
              plot.tag = element_text(family = STYLE_FONT, colour = pal(mode)$signature,
-                                     size = 9, face = "plain", hjust = 1, vjust = 0)))
+                                     size = 9, face = "plain", hjust = 1, vjust = 1)))
 }
 
 # Title in Spanish, English gloss as the subtitle's first line.

@@ -13,3 +13,8 @@ frames*/
 *.feather
 .DS_Store
 .Rhistory
+# Post 01 keeps two small extracts that a script cannot download.
+!01-mexico-fiscal-profiles/data/
+01-mexico-fiscal-profiles/data/*
+!01-mexico-fiscal-profiles/data/conapo/
+!01-mexico-fiscal-profiles/data/inegi/
