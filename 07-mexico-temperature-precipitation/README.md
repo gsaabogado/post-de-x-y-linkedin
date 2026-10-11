@@ -54,4 +54,4 @@ A match with a city holds for the yearly average only. Temperature and rain can 
 
 ## Credit
 
-The two-variable relief map began as a version of Milos Popovic's temperature and precipitation map of the Iberian peninsula.
+The two-variable relief map began as a version of Milos Popovic's temperature and precipitation map of the Iberian peninsula. His code for maps of this kind is at [github.com/milos-agathon/3d-bivariate-climate-maps](https://github.com/milos-agathon/3d-bivariate-climate-maps).
