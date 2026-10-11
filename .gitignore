@@ -18,3 +18,6 @@ frames*/
 01-mexico-fiscal-profiles/data/*
 !01-mexico-fiscal-profiles/data/conapo/
 !01-mexico-fiscal-profiles/data/inegi/
+# Post 07 keeps two small extracts averaged on a cluster from ERA5-Land.
+!07-mexico-temperature-precipitation/in/mx_climatology_1991_2020.rds
+!07-mexico-temperature-precipitation/in/world_cities_pool.rds
