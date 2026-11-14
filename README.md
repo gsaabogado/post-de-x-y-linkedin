@@ -10,6 +10,7 @@ Código detrás de los hilos con datos de Luis Sarmiento en X y LinkedIn. Cada c
 | `04-mexico-gdp-marginals` | Where Mexico's GDP is produced, folded onto latitude and longitude, then per person | Rossi-Hansberg and Zhang (2025) gridded GDP, WorldPop 2025, INEGI, FRED |
 | `06-mexico-solar-income` | Who has solar panels in Mexico, by place and by income | INEGI Encuesta Intercensal 2025, Censo 2020 (extended questionnaire), CFE |
 | `07-mexico-temperature-precipitation` | How uneven Mexico's climate is: temperature, rainfall and both at once, with cities of the world for comparison | ERA5-Land 1991-2020 (Copernicus), Terrain Tiles (Mapzen, AWS), GADM 4.1 |
+| `08-mexico-solar-tariffs` | Whether Mexico's subsidised household electricity tariffs hold back rooftop solar: adoption by income, prices against the estimated unsubsidised tariff, years to pay back a small system, and who receives the subsidy | CFE tariffs and Usuarios y Consumos por Municipio, CNE, Diario Oficial, INEGI ENIGH 2024, Censo 2020 and Encuesta Intercensal 2025, Global Solar Atlas, EIA-861, installer price lists |
 | `02-mexico-population-latitude` | Only the WorldPop download that posts 04 and 06 reuse | WorldPop 2025, 1 km |
 
 ## How to run
