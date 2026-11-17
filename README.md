@@ -11,6 +11,7 @@ Código detrás de los hilos con datos de Luis Sarmiento en X y LinkedIn. Cada c
 | `06-mexico-solar-income` | Who has solar panels in Mexico, by place and by income | INEGI Encuesta Intercensal 2025, Censo 2020 (extended questionnaire), CFE |
 | `07-mexico-temperature-precipitation` | How uneven Mexico's climate is: temperature, rainfall and both at once, with cities of the world for comparison | ERA5-Land 1991-2020 (Copernicus), Terrain Tiles (Mapzen, AWS), GADM 4.1 |
 | `08-mexico-solar-tariffs` | Whether Mexico's subsidised household electricity tariffs hold back rooftop solar: adoption by income, prices against the estimated unsubsidised tariff, years to pay back a small system, and who receives the subsidy | CFE tariffs and Usuarios y Consumos por Municipio, CNE, Diario Oficial, INEGI ENIGH 2024, Censo 2020 and Encuesta Intercensal 2025, Global Solar Atlas, EIA-861, installer price lists |
+| `09-mexico-fertility-map` | Children per woman in each Mexican municipality, and how it varies with women's schooling, poverty, rurality and indigenous share | INEGI Encuesta Intercensal 2025, Marco Geoestadístico and Censo 2020, CONEVAL, Secretaría de Salud birth certificates (SINAC) |
 | `02-mexico-population-latitude` | Only the WorldPop download that posts 04 and 06 reuse | WorldPop 2025, 1 km |
 
 ## How to run
